@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdCheck ,MdDeleteForever} from "react-icons/md";
 
 function ToDoList() {
     const [inputValue , setinputValue]= useState("")
     const [Task , setTask]= useState([])
+    const [dateTime, setdateTime]= useState([])
     const inputHandler = (value)=>{
         setinputValue(value)
     }
@@ -16,13 +17,27 @@ function ToDoList() {
         }) 
         setinputValue("")           
     }
+
+    // to do app
+  useEffect(()=>{
+     const intervel = setInterval(()=>{
+     const date= new Date();
+    const  formateDate = date.toLocaleDateString()
+    const  formateTime = date.toLocaleTimeString()
+    setdateTime(`${formateDate}-${formateTime}`)
+   },1000)
+   return()=> clearInterval(intervel)
+  },[])
     return (
         <>
         <section className='flex flex-col h-screen justify-center items-center bg-blue-100 border border-b-black gap-4'>
-            <div className=' flex flex-col items-center w-[25%] border border-e-blue-950 gap-2'>
+            <div className=' flex flex-col items-center w-[25%] gap-2'>
             <header>
                 <h1 className='text-3xl font-extrabold'>To Do App</h1>
             </header>
+            <div>
+                <h2>{dateTime}</h2>
+            </div>
             <section>
                 <form className='flex gap-2 'onSubmit={handeleForm}>
                     <div>
@@ -37,7 +52,7 @@ function ToDoList() {
             </section>
             </div>
             <section>
-            <ul className='flex flex-col gap-4 bg-[#0b1a24] rounded-2xl p-4 border border-black'>
+            <ul className='flex flex-col gap-4 rounded-2xl p-4 '>
     {
         Task.map((cur, index) => {
             return (
